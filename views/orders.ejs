@@ -27,6 +27,16 @@
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin.css" rel="stylesheet" />
+
+    <!-- Custom Style -->
+    <style>
+      #delete-link {
+        color: rgb(60, 60, 60);
+      }
+      #delete-link:hover {
+        color: red;
+      }
+    </style>
   </head>
 
   <body id="page-top">
@@ -109,6 +119,7 @@
                       <th>Sweet Type</th>
                       <th>Sweet Count</th>
                       <th>Total Price</th>
+                      <th>Delete Order</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,10 +133,19 @@
                       <td><%= order.sweet_name %></td>
                       <td><%= order.sweet_count %></td>
                       <td><%= order.sweet_price %></td>
+                      <td>
+                        <a
+                          id="delete-link"
+                          href="/orders/<%= order.id %>/delete"
+                          onclick="return confirm('Are you sure to delete this order?');"
+                        >
+                          <i class="fas fa-times"></i>
+                        </a>
+                      </td>
                     </tr>
                     <% }); %> <% } else { %>
                     <tr>
-                      <td colspan="7" class="text-center">No Data Available</td>
+                      <td colspan="8" class="text-center">No Data Available</td>
                     </tr>
                     <% } %>
                   </tbody>

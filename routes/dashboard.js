@@ -236,7 +236,23 @@ router.get("/orders", sessionChecker, (req, res) => {
     .then(snapshot => {
       // load users' data
       snapshot.forEach(doc => {
-        orders.push(doc.data());
+        // create an order object
+        let order = {
+          id: doc.id,
+          customer_id: doc.data().customer_id,
+          customer_name: doc.data().customer_name,
+          customer_phone: doc.data().customer_phone,
+          order_date: doc.data().order_date,
+          order_time: doc.data().order_time,
+          sweet_name: doc.data().sweet_name,
+          sweet_price: doc.data().sweet_price,
+          sweet_category: doc.data().sweet_category,
+          sweet_count: doc.data().sweet_count,
+          sweet_image: doc.data().sweet_image
+        };
+
+        // push order object to array
+        orders.push(order);
       });
 
       // render users page
@@ -248,6 +264,30 @@ router.get("/orders", sessionChecker, (req, res) => {
       console.log(err);
       res.redirect("/500");
     });
+});
+
+// delete order
+router.get("/orders/:id/delete", sessionChecker, (req, res) => {
+  // get order id
+  const id = req.params.id;
+
+  // check for id
+  if (id) {
+    db.collection("orders")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Order deleted successfully");
+        res.redirect("/orders");
+      })
+      .catch(err => {
+        console.log(err);
+        res.redirect("/orders");
+      });
+  } else {
+    console.log("Order ID is unknown");
+    res.redirect("/orders");
+  }
 });
 
 // sweets
